@@ -5,7 +5,7 @@ const stations = ["Parbhani", "Selu", "Partur", "Jalana", "Aurangabad"];
 const totalTrains = 1000;
 
 // write your Detabase Link here
-const dbUrl = "mongodb://127.0.0.1:27017";
+const dbUrl = "mongodb://localhost:27017";
 const dbName = "train_search";
 
 function getRandomNumber(min, max) {
