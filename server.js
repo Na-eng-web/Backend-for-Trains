@@ -5,6 +5,8 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
+// sorting is not working
+
 mongoose
   .connect("mongodb://localhost:27017/train_search")
   .then(() => console.log("We are connected to DB"))
@@ -22,11 +24,16 @@ const trainsSchema = new mongoose.Schema({
 const Trains = mongoose.model("trains", trainsSchema);
 
 app.post("/search", (req, res) => {
-  const { From, To } = req.body;
-  console.log(From, To);
-  Trains.find({
-    route: { $all: [From, To] },
-  })
+  const { From, To, Sort = "name" } = req.body;
+  const filter = {
+    route: {
+      $all: [From, To],
+    },
+  };
+  const sortFilter = {};
+  sortFilter[Sort] = -1;
+
+  Trains.find(filter, null, { sortFilter })
     .then((data) => {
       const modifiedTrains = data.filter((train) => {
         const fromIndex = train.route.indexOf(From);
@@ -56,7 +63,6 @@ app.post("/search", (req, res) => {
           time: formattedTimeDifference,
         };
       });
-
       res.json(modifiedTrainsWithTimeDifference);
     })
     .catch((err) => {
