@@ -33,7 +33,6 @@ app.post("/search", (req, res) => {
   const sortFilter = {
     [Sort]: -1,
   };
-  console.log(filter, { sortFilter });
   Trains.find(filter)
     .sort(sortFilter)
     .then((data) => {
