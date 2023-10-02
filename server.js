@@ -30,19 +30,21 @@ app.post("/search", (req, res) => {
       $all: [From, To],
     },
   };
-  const sortFilter = {};
-  sortFilter[Sort] = -1;
-
-  Trains.find(filter, null, { sortFilter })
+  const sortFilter = {
+    [Sort]: -1,
+  };
+  console.log(filter, { sortFilter });
+  Trains.find(filter)
+    .sort(sortFilter)
     .then((data) => {
       const modifiedTrains = data.filter((train) => {
-        const fromIndex = train.route.indexOf(From);
-        const toIndex = train.route.indexOf(To);
+        const fromIndex = train.route?.indexOf(From);
+        const toIndex = train.route?.indexOf(To);
         return fromIndex !== -1 && toIndex !== -1 && fromIndex < toIndex;
       });
 
       const modifiedTrainsWithTimeDifference = modifiedTrains.map((train) => {
-        const fromIndex = train.route.indexOf(From);
+        const fromIndex = train.route?.indexOf(From);
         const toIndex = train.route.indexOf(To);
         const fromTime = parseTime(train.time[fromIndex]);
         const toTime = parseTime(train.time[toIndex]);
@@ -84,3 +86,14 @@ function calculateTimeDifference(fromTime, toTime) {
 }
 
 app.listen(4000, () => console.log("Server is live at 4000!"));
+
+// const filter = {
+//   route: {
+//     $all: ["Parbhani", "Partur"],
+//   },
+// };
+// const sort = {
+//   _id: -1,
+// };
+
+// const cursor = coll.find(filter, { sort });

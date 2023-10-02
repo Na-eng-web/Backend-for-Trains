@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 
 const stations = ["Parbhani", "Selu", "Partur", "Jalana", "Aurangabad"];
 
-const totalTrains = 1000;
+const totalTrains = 100;
 
 // write your Detabase Link here
 const dbUrl = "mongodb://localhost:27017";
